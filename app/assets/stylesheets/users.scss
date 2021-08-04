@@ -1,3 +1,39 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// スマホサイズ
+@media (max-width: 500px) {
+  // トップページ
+  .users-index-wrapper {
+    background-color: rgba(248, 248, 248, 0.6);
+    padding: 50px 10px;
+  }
+  .users-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .user {
+    width: 48%;
+    text-align: center;
+    margin-bottom: 70px;
+  }
+  .user-image {
+    background-color: rgba(190, 190, 190, 0.5);
+    height: 170px;
+    width: 170px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 150, 150, 0.6);
+    margin: 0 auto 20px;
+  }
+  .user-nickname {
+    text-align: left;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.8);
+    padding-left: 15px;
+    margin-bottom: 7px;
+  }
+  .first-language {
+    text-align: right;
+    color: rgba(0, 0, 0, 0.8);
+    padding-right: 20px;
+  }
+
+}
