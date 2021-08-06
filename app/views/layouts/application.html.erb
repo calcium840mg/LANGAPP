@@ -7,9 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%# Font Awesome %>
+    <script src="https://kit.fontawesome.com/5df36845f1.js" crossorigin="anonymous"></script>
+    <%# Google Fonts %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
   </head>
 
   <body>
+    <%= render "shared/header" %>
     <%= yield %>
+    <%= render "shared/footer" %>
   </body>
 </html>
