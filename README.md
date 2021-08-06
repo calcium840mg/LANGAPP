@@ -1,4 +1,7 @@
+
 # README
+
+# テーブル設計
 
 ## user テーブル
 | Column                  | Type      | Options                   |
@@ -36,6 +39,15 @@
 - belongs_to :user
 - belongs_to :my_like_user, class_name: "User"
 
+| Column          |  Type      | Options                             |
+|-----------------|------------|-------------------------------------|
+| user            | references | null: false, foreign_key: true      |
+| my_like_user    | references | null: false, foreign_key: true      |
+
+### Association
+- belongs_to :user
+
+
 
 
 ## message テーブル
@@ -44,6 +56,7 @@
 | user             | references | null: false, foreign_key: true      |
 | text             | string     | null: false                         |
 | matching_room    | references | null: false, foreign_key: true      | 
+| matching_room    | integer    | null: false                         | 
 
 ### Association 
 - belongs_to :user
@@ -56,7 +69,7 @@
 |------------------------|------------|-------------------|
 | community_name         | string     | null: false       |
 | second_language_level  | integer    | null: false       |
-| introduction           | string     | null: false       |
+| introduction           | text       | null: false       |
 
 ### Association 
 - has_many :user_communities
@@ -64,7 +77,7 @@
 
 
 
-## user_community テーブル
+## user_community テーブル (中間)
 | Column       | Type       | Options                         |
 |--------------|------------|---------------------------------|
 | user         | references | null: false, foreign_key: true  |
@@ -88,6 +101,16 @@
 
 
 ## matching_room_user テーブル
+| user           | references | null: false, foreign_key: true  |
+| matching_room  | references | null: false, foreign_key: true  |
+
+### Association 
+- has_many :users, through: :matching_room_users
+- has_many :messages
+
+
+
+## matching_room_user テーブル (中間)
 | Column         | Type       | Options                         |
 |----------------|------------|---------------------------------|
 | user           | references | null: false, foreign_key: true  |
@@ -107,3 +130,6 @@
 
 ### Association 
 - belongs_to :user
+
+
+
