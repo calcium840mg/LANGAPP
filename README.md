@@ -6,29 +6,35 @@
 | email                   | string    | null: false  unique: true |
 | encrypted_password      | string    | null: false               |
 | nickname                | string    | null: false               |
-| sex                     | integer   | null: false               | 
+| gender                  | integer   | null: false               | 
 | first_language          | integer   | null: false               |
 | birthday                | date      | null: false               |
 | occupation              | integer   | null: false               |
 | second_language_level   | integer   | null: false               |
 
 ### Association
-- has_many :like
-- has_many :community, through:user_community
-- has_many :matching_room, through:matching_room_user
-- has_many :message
+- has_many :likes
+- has_many :like_users, through: :likes, source: :my_like_user
+- has_many :reverse_of_likes, class_name: "Like", foreign_key: "my_like_user"
+- has_many :liked_users, through: :reverse_of_likes, source: :user
+- has_many :user_communities
+- has_many :communities, through: :user_communities
+- has_many :matching_room_users
+- has_many :matching_rooms, through: :matching_room_users
+- has_many :messages
 - has_one  :profile
 
 
 
 ## like テーブル
-| Column          |  Type      | Options                             |
-|-----------------|------------|-------------------------------------|
-| user            | references | null: false, foreign_key: true      |
-| my_like_user    | references | null: false, foreign_key: true      |
+| Column          |  Type      | Options                                                 |
+|-----------------|------------|---------------------------------------------------------|
+| user            | references | null: false, foreign_key: true                          |
+| my_like_user    | references | null: false, foreign_key: true { to_table: :users }     |
 
 ### Association
 - belongs_to :user
+- belongs_to :my_like_user, class_name: "User"
 
 
 
@@ -37,7 +43,7 @@
 |------------------|------------|-------------------------------------|
 | user             | references | null: false, foreign_key: true      |
 | text             | string     | null: false                         |
-| matching_room    | integer    | null: false                         | 
+| matching_room    | references | null: false, foreign_key: true      | 
 
 ### Association 
 - belongs_to :user
@@ -53,7 +59,8 @@
 | introduction           | string     | null: false       |
 
 ### Association 
-- has_many :user, through:user_community
+- has_many :user_communities
+- has_many :users, through: :user_communities
 
 
 
@@ -72,12 +79,11 @@
 ## matching_room テーブル
 | Column         | Type       | Options                         |
 |----------------|------------|---------------------------------|
-| user           | references | null: false, foreign_key: true  |
-| matching_room  | references | null: false, foreign_key: true  |
 
 ### Association 
-- has_many :user, through:matching_room_user
-- has_many :message
+- has_many :matching_room_users
+- has_many :users, through: :matching_room_users
+- has_many :messages
 
 
 
@@ -97,6 +103,7 @@
 | Column         | Type       | Options                         |
 |----------------|------------|---------------------------------|
 | user           | references | null: false, foreign_key: true  |
+| introduction   | text       | null: false                     |
 
 ### Association 
 - belongs_to :user
