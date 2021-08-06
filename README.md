@@ -1,70 +1,102 @@
-# README
-## user テーブル
+# テーブル設計
 
-|Column|Type|Options|
-|------------------------|-----------| -------------------------|
-|email                   |  string   | null: false  unique: true|
-|encrypted_password      |  string   | null: false              |
-|nickname                |  string   | null: false              |
-|sex                     |  integer  | null: false              | 
-|first_language          |  integer  | null: false              |
-|birthday                |  date     | null: false              |
-|occupation              |  integer  | null: false              |
-|second_language_level   |  integer  | null: false              |
+## user テーブル
+| Column                  | Type      | Options                   |
+|-------------------------|-----------|---------------------------|
+| email                   | string    | null: false  unique: true |
+| encrypted_password      | string    | null: false               |
+| nickname                | string    | null: false               |
+| sex                     | integer   | null: false               | 
+| first_language          | integer   | null: false               |
+| birthday                | date      | null: false               |
+| occupation              | integer   | null: false               |
+| second_language_level   | integer   | null: false               |
 
 ### Association
 - has_many :like
-- has_many :community
-- has_many :user_community
-- has_many :matching_room
+- has_many :community, through:user_community
+- has_many :matching_room, through:matching_room_user
 - has_many :message
 - has_one  :profile
 
 
-## items テーブル
 
-|     Column      |  Type     |   Options        |
-|---------------- |-----------|-----------       |
-| name            | integer   | null: false      |
-| info            | text      | null: false      |
-| category_id     | integer   | null: false      |
-| status_id       | integer   | null: false      |
-| shipping_fee_id | integer   | null: false      | 
-| prefecture_id   | integer   | null: false      |
-| days_id         | integer   | null: false      |          
-| price           | integer   | null: false      |
-| user            | references|foreign_key: true |
+## like テーブル
+| Column          |  Type      | Options                             |
+|-----------------|------------|-------------------------------------|
+| user            | references | null: false, foreign_key: true      |
+| my_like_user    | references | null: false, foreign_key: true      |
+
 ### Association
-
 - belongs_to :user
-- has_one :purchase
- 
-
-## address テーブル
-
-|     Column       |  Type     |   Option         |
-|----------------  |-----------|------------------|
-| postalcoad       |  string   | null: false      | 
-| prefecture_id    |  string   | null: false      |
-| city             |  string   | null: false      | 
-| addresses        |  string   | null: false      |
-| apartment        |  string   |                  |
-| phon_number      |  string   | null: false      |
-| purchase         | references| foreign_key: true
-
-### Association 
-- belongs_to :purchase
 
 
 
-## purchases テーブル
-|     Column       |  Type     |   Options        |
-|----------------  |-----------|----------------- |
-| user             | references|foreign_key: true |
-| item             | references|foreign_key: true |
+## message テーブル
+| Column           | Type       | Option                              |
+|------------------|------------|-------------------------------------|
+| user             | references | null: false, foreign_key: true      |
+| text             | string     | null: false                         |
+| matching_room    | integer    | null: false                         | 
 
 ### Association 
 - belongs_to :user
-- belongs_to :item
-- has_one :addres 
+- belongs_to :matching_room
 
+
+
+## community テーブル
+| Column                 | Type       | Options           |
+|------------------------|------------|-------------------|
+| community_name         | string     | null: false       |
+| second_language_level  | integer    | null: false       |
+| introduction           | string     | null: false       |
+
+### Association 
+- has_many :user, through:user_community
+
+
+
+## user_community テーブル (中間)
+| Column       | Type       | Options                         |
+|--------------|------------|---------------------------------|
+| user         | references | null: false, foreign_key: true  |
+| community    | references | null: false, foreign_key: true  |
+
+### Association 
+- belongs_to :user
+- belongs_to :community
+
+
+
+## matching_room テーブル
+| Column         | Type       | Options                         |
+|----------------|------------|---------------------------------|
+| user           | references | null: false, foreign_key: true  |
+| matching_room  | references | null: false, foreign_key: true  |
+
+### Association 
+- has_many :user, through:matching_room_user
+- has_many :message
+
+
+
+## matching_room_user テーブル (中間)
+| Column         | Type       | Options                         |
+|----------------|------------|---------------------------------|
+| user           | references | null: false, foreign_key: true  |
+| matching_room  | references | null: false, foreign_key: true  |
+
+### Association 
+- belongs_to :user
+- belongs_to :matching_room
+
+
+
+## profile テーブル
+| Column         | Type       | Options                         |
+|----------------|------------|---------------------------------|
+| user           | references | null: false, foreign_key: true  |
+
+### Association 
+- belongs_to :user
